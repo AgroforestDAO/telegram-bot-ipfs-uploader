@@ -28,19 +28,39 @@ async function uploadImageToFirestore(ctx, photo) {
  return publicUrl;
 }
 
-async function saveProofToFirestore(ctx, title, description, publicUrl) {
- // Extrai o nome de usuário do Telegram
- const username = ctx.from.username;
+async function saveProofToFirestore(ctx, title, description, publicUrl, safId) {
+   // Extrai o nome de usuário do Telegram
+   const username = ctx.from.username;
+  
+   // Cria um novo documento na coleção 'proof-of-sucessions' com o título, descrição, URL da imagem, nome de usuário e ID do SAF
+   const docRef = firestore.collection("proof-of-sucessions").doc();
+   await docRef.set({
+      title: title,
+      description: description,
+      imgURL: publicUrl,
+      telegramUsername: username,
+      safId: safId, // Inclui o ID do SAF no documento
+      createdAt: new Date()
+   });
+  }
 
- // Cria um novo documento na coleção 'proof-of-sucessions' com o título, descrição, URL da imagem e nome de usuário
- const docRef = firestore.collection("proof-of-sucessions").doc();
- await docRef.set({
-    title: title,
-    description: description,
-    imgURL: publicUrl,
-    telegramUsername: username,
-    createdAt: new Date()
- });
-}
+// Função para buscar documentos na coleção 'safs' onde 'guardianTelegram' é igual ao telegramUsername do usuário
+async function getSaf(telegramUsername) {
+   try {
+      const snapshot = await firestore.collection('safs')
+                                      .where('guardianTelegram', '==', 'atskotzen')
+                                      .get();
+      const safs = [];
+      snapshot.forEach(doc => {
+        // Adiciona cada documento à lista de safs
+        safs.push({ id: doc.id, ...doc.data() });
+      });
+      console.log(`Documentos encontrados na coleção "safs" para o usuário ${telegramUsername}:`, safs);
+      return safs;
+   } catch (error) {
+      console.error('Erro ao buscar documentos na coleção "safs":', error);
+      return null;
+   }
+  }
 
-module.exports = { firestore, saveProofToFirestore, uploadImageToFirestore };
+module.exports = { firestore, saveProofToFirestore, uploadImageToFirestore, getSaf };
