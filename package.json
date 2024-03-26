@@ -1,0 +1,19 @@
+{
+  "name": "telegram-bot-firestore-uploader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r dotenv/config bot.js"
+  },
+  "keywords": [],
+  "author": "Athus Oliveira",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/firestore": "^7.3.1",
+    "@google-cloud/storage": "^7.9.0",
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
+    "telegraf": "^4.16.3"
+  }
+}
