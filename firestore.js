@@ -48,7 +48,7 @@ async function saveProofToFirestore(ctx, title, description, publicUrl, safId) {
 async function getSaf(telegramUsername) {
    try {
       const snapshot = await firestore.collection('safs')
-                                      .where('guardianTelegram', '==', 'atskotzen')
+                                      .where('guardianTelegram', '==', telegramUsername)
                                       .get();
       const safs = [];
       snapshot.forEach(doc => {

@@ -12,8 +12,8 @@ const userStates = {};
 bot.start(async (ctx) => {
   ctx.reply('Bem-vindo! Vamos começar com o título dessa prova de sucessão.');
   // Busca o ID do SAF antes de salvar a prova de sucessão
-  const safId = await getSaf(ctx);
-  console.log("SAF ID: ", safId);
+  const safId = await getSaf(ctx.from.username);
+  //console.log("SAF ID: ", safId);
   // Armazena o username no objeto do usuário
   userStates[ctx.from.id] = { 
      stage: 'title',
@@ -27,7 +27,16 @@ bot.start(async (ctx) => {
  bot.on('text', async (ctx) => {
   const username = ctx.from.username;
   const userId = ctx.from.id;
-  const userState = userStates[userId];
+  let userState = userStates[userId];
+ 
+  // Verifica se userState existe, caso contrário, inicializa com um estado padrão
+  if (!userState) {
+     userState = {
+       stage: 'start', // Estado inicial para usuários não iniciados
+       username: username,
+     };
+     userStates[userId] = userState;
+  }
  
   if (userState.stage === 'title') {
      userState.title = ctx.message.text;
@@ -47,7 +56,7 @@ bot.start(async (ctx) => {
  if (userState.stage === 'photo') {     
      
       // Aqui, você deve usar userState.safId em vez de safId
-      console.log("Saf ID:", userState.safId);
+      //console.log("Saf ID:", userState.safId);
       const photo = ctx.message.photo[ctx.message.photo.length - 1];
       ctx.reply('Aguarde enquanto salvamos a sua prova de sucessão...');
       const imgURL = await processPhoto(ctx, photo);
