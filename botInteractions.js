@@ -1,5 +1,6 @@
 // botInteractions.js
 
+
 const { getUserState, setUserState, resetUserState } = require("./userStateManager");
 //const processPhoto = require("./photoProcessor");
 //const { uploadImageToFirestore, saveProofToFirestore, getSaf } = require("./firestore");
@@ -43,5 +44,25 @@ async function handlePhoto(ctx) {
  }
  
 }
+
+// Função para buscar todos os SAFs e criar uma enquete
+async function handleSafPoll(ctx) {
+  try {
+     const safs = await getAllSafs(); // Busca todos os SAFs
+     const options = safs.map(saf => saf.name); // Cria uma lista de opções com os nomes dos SAFs
+ 
+     // Cria uma enquete com os nomes dos SAFs
+     await ctx.replyWithPoll({
+       question: 'Escolha um SAF:',
+       options: options,
+       is_anonymous: false, // Opcional: define se a enquete é anônima
+     });
+  } catch (error) {
+     console.error('Erro ao buscar SAFs ou criar enquete:', error);
+     ctx.reply('Desculpe, ocorreu um erro ao buscar os SAFs.');
+  }
+ }
+ 
+ 
 
 module.exports = { handleStart, handleText, handlePhoto };

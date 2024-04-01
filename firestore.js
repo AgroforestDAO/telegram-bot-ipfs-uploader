@@ -44,4 +44,37 @@ async function saveProofToFirestore(ctx, title, description, publicUrl) {
  });
 }
 
-module.exports = { firestore, saveProofToFirestore, uploadImageToFirestore };
+// Função para buscar documentos na coleção 'safs' onde 'guardianTelegram' é igual ao telegramUsername do usuário
+async function getSaf(telegramUsername) {
+   try {
+      const snapshot = await firestore.collection('safs').where('guardianTelegram', '==', telegramUsername).get();
+      const safs = [];
+      snapshot.forEach(doc => {
+        // Adiciona cada documento à lista de safs
+        safs.push({ id: doc.id, ...doc.data() });
+      });
+      console.log(`Documentos encontrados na coleção "safs" para o usuário ${telegramUsername}:`, safs);
+      return safs;
+   } catch (error) {
+      console.error('Erro ao buscar documentos na coleção "safs":', error);
+      return null;
+   }
+  }
+
+  async function getAllSafs() {
+   try {
+      const snapshot = await firestore.collection('safs').get();
+      const safs = [];
+      snapshot.forEach(doc => {
+        // Adiciona cada documento à lista de safs
+        safs.push({ id: doc.id, safName: doc.data.safName, ...doc.data() });
+      });
+      console.log('Todos os documentos na coleção "safs":', safs);
+      return safs;
+   } catch (error) {
+      console.error('Erro ao buscar todos os documentos na coleção "safs":', error);
+      return null;
+   }
+  }
+
+module.exports = { firestore, saveProofToFirestore, uploadImageToFirestore, getSaf, getAllSafs };

@@ -2,12 +2,14 @@ require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
 
 const { Telegraf } = require("telegraf");
 const { handleStart, handleText, handlePhoto } = require("./botInteractions");
+const { setSafState, getSafState } = require('./safStateManager');
 const BOT_TOKEN = process.env.BOT_TOKEN; // Acessando o BOT_TOKEN diretamente do ambiente
 const bot = new Telegraf(BOT_TOKEN);
 
 bot.start(handleStart);
 bot.on('text', handleText);
 bot.on('photo', handlePhoto);
+
 
 bot.launch();
 
