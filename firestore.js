@@ -39,6 +39,7 @@ async function saveProofToFirestore(ctx, title, description, publicUrl) {
     description: description,
     imgURL: publicUrl,
     telegramUsername: username,
+   //  telegramId: telegramId,
     createdAt: new Date()
  });
 }
