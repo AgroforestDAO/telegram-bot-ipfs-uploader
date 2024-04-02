@@ -10,7 +10,7 @@ async function handleStart(ctx) {
     ctx.reply('Bem-vindo! Vamos começar selecionando o SAF.'); 
         
     const safs = await getAllSafs(); // Busca todos os SAFs
-    console.log("Safs: ", safs); 
+    //console.log("Safs: ", safs); 
     
     const userState = {
       stage: 'welcome',
@@ -47,7 +47,7 @@ async function handleWelcome(ctx, userState, safs) {
   const selectedSaf = safs.find(saf => saf.safName === ctx.message.text);
   if (selectedSaf) {
       userState.safId = selectedSaf.id;
-      console.log(`O usuário selecionou o SAF com ID: ${userState.safId}`);
+      //console.log(`O usuário selecionou o SAF com ID: ${userState.safId}`);
   }  
   userState.stage = 'title';
   setUserState(ctx.from.id, userState);
