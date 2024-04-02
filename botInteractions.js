@@ -89,8 +89,10 @@ async function handlePhoto(ctx) {
     ctx.reply('Aguarde enquanto salvamos a sua prova de sucessão...');
     const safId = userState.safId;
     const telegramId = userState.telegramId;
+    const title = userState.title;
+    const description = userState.description;
     const publicURL = await processPhoto(ctx, ctx.message.photo[ctx.message.photo.length - 1]);
-    await saveProofToFirestore(ctx, telegramId, userState.title, userState.description, publicURL, safId);
+    await saveProofToFirestore(ctx, title, description, publicURL, safId, telegramId,);
 
     ctx.reply('Prova de sucessão salva com sucesso!');
     resetUserState(ctx.from.id);
