@@ -1,21 +1,21 @@
 // botInteractions.js
-
-
 const { getUserState, setUserState, resetUserState } = require("./userStateManager");
 //const processPhoto = require("./photoProcessor");
-//const { uploadImageToFirestore, saveProofToFirestore, getSaf } = require("./firestore");
+const { uploadImageToFirestore, saveProofToFirestore, getSaf, getAllSafs } = require("./firestore");
 
 async function handleStart(ctx) {
- ctx.reply('Bem-vindo! Vamos começar com o título dessa prova de sucessão.');
+ ctx.reply('Bem-vindo! Vamos começar selecionando o SAF.');
  //const safId = await getSaf(ctx.from.username);
+  
  const userState = {
     stage: 'title',
     username: ctx.from.username,
-    telegramId: ctx.from.id
-    // safId: safId
+    telegramId: ctx.from.id,
+    //safId: safId
  };
+ 
  setUserState(ctx.from.id, userState);
- console.log(userState);
+ handleSafPoll(ctx)
 }
 
 async function handleText(ctx) {
@@ -49,14 +49,12 @@ async function handlePhoto(ctx) {
 async function handleSafPoll(ctx) {
   try {
      const safs = await getAllSafs(); // Busca todos os SAFs
-     const options = safs.map(saf => saf.name); // Cria uma lista de opções com os nomes dos SAFs
- 
+     const options = safs.map(saf => saf.safName);
+     const question = "Para qual SAF você vai enviar a Prova de Sucessão?";     
      // Cria uma enquete com os nomes dos SAFs
-     await ctx.replyWithPoll({
-       question: 'Escolha um SAF:',
-       options: options,
-       is_anonymous: false, // Opcional: define se a enquete é anônima
-     });
+     ctx.sendPoll(question, options, {is_anonymous: false})
+
+     
   } catch (error) {
      console.error('Erro ao buscar SAFs ou criar enquete:', error);
      ctx.reply('Desculpe, ocorreu um erro ao buscar os SAFs.');
