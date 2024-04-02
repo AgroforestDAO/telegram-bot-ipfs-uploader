@@ -1,3 +1,4 @@
+// bot.js
 require('dotenv').config();
 const { Telegraf } = require("telegraf");
 const { handleStart, handleText, handlePhoto } = require("./botInteractions");
