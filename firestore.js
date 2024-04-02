@@ -28,7 +28,7 @@ async function uploadImageToFirestore(ctx, photo) {
   return publicUrl;
 }
 
-async function saveProofToFirestore(ctx, title, description, publicUrl) {
+async function saveProofToFirestore(ctx, title, description, publicUrl, safId, telegramId) {
   // Extrai o nome de usuário do Telegram
   const username = ctx.from.username;
 
@@ -39,7 +39,8 @@ async function saveProofToFirestore(ctx, title, description, publicUrl) {
     description: description,
     imgURL: publicUrl,
     telegramUsername: username,
-    //  telegramId: telegramId,
+    telegramUserId: telegramId,
+    safId: safId,
     createdAt: new Date(),
   });
 }

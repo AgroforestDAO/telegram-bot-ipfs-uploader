@@ -1,5 +1,5 @@
 // photoProcessor.js
-
+const { uploadImageToFirestore } = require("./firestore");
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');

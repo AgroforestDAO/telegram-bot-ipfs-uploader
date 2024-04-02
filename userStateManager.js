@@ -3,7 +3,7 @@
 const userStates = {};
 
 function getUserState(userId) {
- return userStates[userId] || { stage: 'start' };
+ return userStates[userId] || { stage: 'welcome' };
 }
 
 function setUserState(userId, state) {

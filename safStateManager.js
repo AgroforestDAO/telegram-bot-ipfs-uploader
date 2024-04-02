@@ -1,5 +1,4 @@
 // safStateManager.js
-
 const safStates = new Map();
 
 function setSafState(userId, safId) {
