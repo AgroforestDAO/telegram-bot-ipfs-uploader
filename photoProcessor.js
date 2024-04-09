@@ -17,16 +17,14 @@ async function processPhoto(ctx, photo) {
  const filePath = path.join(__dirname, `img${Date.now()}.jpg`);
  const writer = fs.createWriteStream(filePath);
 
- let ipfsHash; 
 
  return new Promise((resolve, reject) => {
     response.data.pipe(writer);
 
     writer.on('finish', async () => {
       await uploadToIPFS(filePath, apiKey, secretApiKey)
-      .then(hash => {
-          console.log('Função processPhoto - Hash do arquivo no IPFS:', hash);
-          ipfsHash = hash;
+      .then(hash => {         
+          resolve({ ipfsHash: hash });
       })
       .catch(error => {
           console.error('Erro ao fazer upload para o IPFS:', error.message);
@@ -43,9 +41,9 @@ async function processPhoto(ctx, photo) {
         if (err) console.error('Erro ao excluir o arquivo temporário:', err);
         else console.log('Arquivo temporário excluído com sucesso.');
       });
-      resolve({ ipfsHash,
-         //firestoreURL
-         });
+      // resolve({ ipfsHash,
+      //    //firestoreURL
+      //    });
     });
 
     writer.on('error', reject);

@@ -47,6 +47,12 @@ async function handleWelcome(ctx, userState, safs) {
   const selectedSaf = safs.find(saf => saf.safName === ctx.message.text);
   if (selectedSaf) {
       userState.safId = selectedSaf.id;
+      userState.safName = selectedSaf.safName;
+      userState.mentorName = selectedSaf.mentorName;
+      userState.safType = selectedSaf.safType;
+      userState.local = selectedSaf.local;
+      userState.createdByName = selectedSaf.createdByName;
+      userState.createdByEmail = selectedSaf.createdByEmail;
       //console.log(`O usuário selecionou o SAF com ID: ${userState.safId}`);
   }  
   userState.stage = 'title';
@@ -91,9 +97,15 @@ async function handlePhoto(ctx) {
     const telegramId = userState.telegramId;
     const title = userState.title;
     const description = userState.description;
+    const safName = userState.safName;
+    const mentorName = userState.mentorName;
+    const safType = userState.safType;
+    const local = userState.local;
+    const createdByName = userState.createdByName;
+    const createdByEmail = userState.createdByEmail;    
     const publicURL = await processPhoto(ctx, ctx.message.photo[ctx.message.photo.length - 1]);
-    console.log(publicURL);
-    await saveProofToFirestore(ctx, title, description, publicURL, safId, telegramId,);
+    
+    await saveProofToFirestore(ctx, title, description, publicURL.ipfsHash, safId, telegramId, safName, mentorName, safType, local, createdByName, createdByEmail);
 
     ctx.reply('Prova de sucessão salva com sucesso!');
     resetUserState(ctx.from.id);

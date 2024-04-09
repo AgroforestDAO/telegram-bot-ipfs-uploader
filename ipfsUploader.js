@@ -21,7 +21,7 @@ async function uploadToIPFS(filePath, apiKey, secretApiKey) {
 
         // Verificar se a solicitação foi bem-sucedida
         if (response.status === 200) {
-            console.log('Upload bem-sucedido! Hash do arquivo:', response.data.IpfsHash);
+            console.log('IPFS Upload concluído! - IPFS CID:', response.data.IpfsHash);
             return response.data.IpfsHash;
         } else {
             console.error('Falha no upload:', response.data);
