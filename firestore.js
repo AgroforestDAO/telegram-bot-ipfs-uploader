@@ -37,7 +37,7 @@ async function saveProofToFirestore(ctx, title, description, publicUrl, safId, t
   await docRef.set({
     title: title,
     description: description,
-    imgURL: publicUrl,
+    imgURL: `https://cloudflare-ipfs.com/ipfs/${publicUrl}`,
     telegramUsername: username,
     telegramUserId: telegramId,
     safId: safId,

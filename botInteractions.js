@@ -92,6 +92,7 @@ async function handlePhoto(ctx) {
     const title = userState.title;
     const description = userState.description;
     const publicURL = await processPhoto(ctx, ctx.message.photo[ctx.message.photo.length - 1]);
+    console.log(publicURL);
     await saveProofToFirestore(ctx, title, description, publicURL, safId, telegramId,);
 
     ctx.reply('Prova de sucessão salva com sucesso!');
