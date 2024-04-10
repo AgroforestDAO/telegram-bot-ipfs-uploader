@@ -29,7 +29,7 @@ async function uploadImageToFirestore(ctx, photo) {
   return publicUrl;
 }
 
-async function saveProofToFirestore(ctx, title, description, publicUrl, safId, telegramId) {
+async function saveProofToFirestore(ctx, title, description, publicUrl, safId, telegramId, safName, mentorName, safType, local, createdByName, createdByEmail) {
   // Extrai o nome de usuário do Telegram
   const username = ctx.from.username;
 
@@ -38,9 +38,15 @@ async function saveProofToFirestore(ctx, title, description, publicUrl, safId, t
   await docRef.set({
     title: title,
     description: description,
-    imgURL: publicUrl,
+    imgURL: `https://cloudflare-ipfs.com/ipfs/${publicUrl}`,
     telegramUsername: username,
     telegramUserId: telegramId,
+    safName:safName,
+    mentorName: mentorName,
+    safType: safType,
+    local: local,
+    createdByName: createdByName,
+    createdByEmail: createdByEmail,
     safId: safId,
     createdAt: new Date(),
   });
