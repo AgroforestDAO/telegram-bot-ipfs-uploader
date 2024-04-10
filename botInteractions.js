@@ -37,7 +37,7 @@ async function selectSafs(safs, ctx) {
         .oneTime()
       )      
    } catch (error) {
-      console.error('Erro ao buscar SAFs ou criar enquete:', error);
+      console.error('Erro ao buscar SAFs:', error);
       ctx.reply('Desculpe, ocorreu um erro ao buscar os SAFs.');
    }
 }
@@ -63,7 +63,7 @@ async function handleWelcome(ctx, userState, safs) {
 async function handleTitle(ctx, userState) {
   if(userState.stage === 'title'){
     userState.title = ctx.message.text;
-    ctx.reply(`Ótimo! ${userState.username} Agora, escreva a descrição para essa prova de sucessão.`);
+    ctx.reply(`Ótimo! ${userState.username} Agora, escreva a DESCRIÇÃO para essa prova de sucessão.`);
     userState.stage = 'description';
     setUserState(ctx.from.id, userState);
   }
@@ -73,7 +73,7 @@ async function handleDescription(ctx, userState) {
     userState.description = ctx.message.text;
     userState.stage = 'photo';
     setUserState(ctx.from.id, userState);
-    ctx.reply('Perfeito! Agora, envie a foto.');
+    ctx.reply('Perfeito! Agora, envie a FOTO.');
 }
 
 // Função handleText refatorada
@@ -92,7 +92,7 @@ async function handleText(ctx) {
 async function handlePhoto(ctx) {
  const userState = getUserState(ctx.from.id);
  if (userState.stage === 'photo') {
-    ctx.reply('Aguarde enquanto salvamos a sua prova de sucessão...');
+    ctx.reply('Aguarde enquanto salvamos a sua prova de sucessão no IPFS...');
     const safId = userState.safId;
     const telegramId = userState.telegramId;
     const title = userState.title;
@@ -107,7 +107,8 @@ async function handlePhoto(ctx) {
     
     await saveProofToFirestore(ctx, title, description, publicURL.ipfsHash, safId, telegramId, safName, mentorName, safType, local, createdByName, createdByEmail);
 
-    ctx.reply('Prova de sucessão salva com sucesso!');
+    ctx.reply('Prova de sucessão salva com sucesso no IPFS!');
+    ctx.reply(`https://cloudflare-ipfs.com/ipfs/${publicURL.ipfsHash}`);
     resetUserState(ctx.from.id);
  }
  
